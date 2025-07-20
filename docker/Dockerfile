@@ -1,5 +1,5 @@
 # ベースイメージを指定
-FROM python:3.12-slim
+FROM python:3.13.0-slim-bullseye
 
 # 作業ディレクトリを設定
 WORKDIR /app
@@ -14,8 +14,9 @@ RUN apt-get update && \
 COPY requirements.txt requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
-# アプリケーションのソースコードをコピー
-COPY . .
+
+# アプリケーションのappディレクトリのみをコピー
+COPY ../app ./app
 
 # コンテナ起動時に実行するコマンド
 CMD ["gunicorn", "-w", "4", "-b", "0.0.0.0:8000", "app:app"]

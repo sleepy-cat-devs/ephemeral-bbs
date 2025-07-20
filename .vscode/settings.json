@@ -3,7 +3,7 @@
         {
             "format": "expanded",
             "extensionName": ".css",
-            "savePath": "/static/css",
+            "savePath": "/app/static/css",
         }
     ],
     "ruff.format.preview": true,
@@ -15,5 +15,8 @@
     ],
     "cSpell.words": [
         "urandom"
+    ],
+    "python.analysis.extraPaths": [
+        "${workspaceFolder}/app"
     ],
 }
