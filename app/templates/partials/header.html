@@ -1,0 +1,13 @@
+<div class="header">
+  <h1>儚BBS</h1>
+  {% if session.user %}
+  <div class="user-info">
+    <img
+      src="{{ url_for('static', filename='default_avatar.png') if not session.user.avatar else 'https://cdn.discordapp.com/avatars/' + session.user.id + '/' + session.user.avatar + '.png' }}"
+      alt="avatar"
+    />
+    <span>{{ session.user.username }}</span>
+    <a href="{{ url_for('auth.logout') }}" class="logout-button" style="margin-left: 15px">Logout</a>
+  </div>
+  {% endif %}
+</div>

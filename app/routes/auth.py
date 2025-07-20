@@ -55,6 +55,15 @@ def login() -> WerkzeugResponse:
         WerkzeugResponse: レスポンスオブジェクト
 
     """
+    if Const.DEBUG_AUTH_BYPASS:
+        session["user"] = {
+            "id": "123456789012345678",
+            "username": "TestUser",
+            "avatar": "default_avatar.png",
+        }
+        session["is_member"] = True
+        return redirect(url_for("bbs.bbs"))
+
     return redirect(Const.DISCORD_AUTH_URL)
 
 

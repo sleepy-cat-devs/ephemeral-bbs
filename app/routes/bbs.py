@@ -93,7 +93,9 @@ def bbs() -> Response | WerkzeugResponse:
     """
     if "user" not in session or not session.get("is_member"):
         return Response(
-            render_template("login_required.html", title="閲覧権限がありません"),
+            render_template(
+                "pages/login_required/index.html", title="閲覧権限がありません"
+            ),
         )
 
     if request.method == "POST":
@@ -110,7 +112,7 @@ def bbs() -> Response | WerkzeugResponse:
             except RuntimeError as e:
                 return Response(
                     render_template(
-                        "bbs.html",
+                        "pages/bbs/index.html",
                         title="Server Member BBS",
                         posts=load_posts()[::-1],
                         error_message=str(e),
@@ -120,4 +122,6 @@ def bbs() -> Response | WerkzeugResponse:
 
     posts = load_posts()
     posts.reverse()
-    return Response(render_template("bbs.html", title="Server Member BBS", posts=posts))
+    return Response(
+        render_template("pages/bbs/index.html", title="Server Member BBS", posts=posts),
+    )

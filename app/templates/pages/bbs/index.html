@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+
+{% block content %}
+  {% if session.user %}
+    {% include "partials/post_form.html" %}
+  {% endif %}
+
+  <div class="post-list">
+    {% for post in posts %}
+      {% include "pages/bbs/post_item.html" %}
+    {% else %}
+      <div class="no-posts">
+        <p>まだ投稿はありません。一番乗りで投稿しよう！</p>
+      </div>
+    {% endfor %}
+  </div>
+{% endblock %}

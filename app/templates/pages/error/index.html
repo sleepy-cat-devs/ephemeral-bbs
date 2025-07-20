@@ -1,0 +1,10 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <div class="error-container">
+        <h1>An Error Occurred</h1>
+        <p>{{ message }}</p>
+        <!-- 'index' を 'bbs' に修正 -->
+        <a href="{{ url_for('bbs.bbs') }}">Go to Home</a>
+    </div>
+{% endblock %}
