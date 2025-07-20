@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>簡易BBS</h1>
+            {% if session.user %}
+                <div class="user-info">
+                    <img src="{{ url_for('static', filename='default_avatar.png') if not session.user.avatar else 'https://cdn.discordapp.com/avatars/' + session.user.id + '/' + session.user.avatar + '.png' }}" alt="avatar">
+                    <span>{{ session.user.username }}</span>
+                    <a href="{{ url_for('logout') }}" class="logout-button" style="margin-left: 15px;">Logout</a>
+                </div>
+            {% else %}
+                <a href="{{ url_for('login') }}" class="login-button">Login with Discord</a>
+            {% endif %}
+        </div>
+
+        {% if session.user %}
+            <div class="post-form">
+                <form method="POST" action="{{ url_for('bbs') }}">
+                    <textarea name="message" placeholder="いまどうしてる？" required></textarea>
+                    <button type="submit">投稿する</button>
+                </form>
+            </div>
+        {% endif %}
+
+        <div class="post-list">
+            {% for post in posts %}
+                <div class="post">
+                    <div class="post-header">
+                        {% if post.avatar_url %}
+                            <img src="{{ post.avatar_url }}" alt="{{ post.username }}'s avatar">
+                        {% endif %}
+                        <span class="username">{{ post.username }}</span>
+                        <span class="timestamp">{{ post.timestamp }}</span>
+                    </div>
+                    <div class="post-message">
+                        <p>{{ post.message }}</p>
+                    </div>
+                </div>
+            {% else %}
+                <div class="no-posts">
+                    <p>まだ投稿はありません。一番乗りで投稿しよう！</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>

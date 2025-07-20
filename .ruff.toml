@@ -1,0 +1,19 @@
+line-length = 120
+select = ["ALL"]
+ignore = [
+    "D203", # docstringの空行ルール例外（Django互換などでよく使う)
+    "D213", # docstringの空行ルール例外
+    "D400", # docstringの英文ルール例外
+    "D415", # docstringの英文ルール例外
+]
+
+exclude = [
+    ".venv",
+    "venv",
+    "env",
+    "__pycache__",
+    "migrations",
+    "static",
+    "templates",
+    "templates_old"
+]

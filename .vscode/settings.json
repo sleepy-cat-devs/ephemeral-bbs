@@ -6,4 +6,14 @@
             "savePath": "/static/css",
         }
     ],
+    "ruff.format.preview": true,
+    // Pythonファイル保存時にRuffで自動フォーマット
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "charliermarsh.ruff",
+    "editor.codeActionsOnSave": [
+        "source.fixAll.ruff"
+    ],
+    "cSpell.words": [
+        "urandom"
+    ],
 }
