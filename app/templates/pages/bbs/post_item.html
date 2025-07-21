@@ -1,10 +1,7 @@
 <div class="post">
   <div class="post-header">
-    {% if post.avatar_url %}
-      <img src="{{ post.avatar_url }}" alt="{{ post.username }}'s avatar" />
-    {% endif %}
-    <span class="username">{{ post.username }}</span>
     <span class="timestamp">{{ post.timestamp }}</span>
+    <span class="username">{{ post.username }}</span>
   </div>
   <div class="post-message">
     <p>{{ post.message }}</p>

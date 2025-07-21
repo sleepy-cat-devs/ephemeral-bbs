@@ -1,18 +1,35 @@
+@use "sass:color";
+
 // カラーテーマ変数
-$bg-color: #000033;
-$text-color: #ffff66;
-$border-color: #ccffff;
-$link-color: #33ccff;
+$color-night_sky: #000033;
+$color-moonlight: #ffff66;
+$color-glimmer: #ccffff;
+$color-aqua: #33ccff;
 
 // ドットフォント
 body {
   font-family: 'DotGothic16', monospace;
-  background-color: $bg-color;
-  color: $text-color;
+  background-color: $color-night_sky;
+  color: $color-aqua;
   margin: 0;
   padding: 0;
   line-height: 1.6;
 }
+
+a {
+  background-color: $color-glimmer;
+  color: $color-night_sky;
+  padding: 0 0.5em;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 1em;
+
+  &:hover {
+    background-color: color.scale($color-aqua, $lightness: 10%);
+  }
+}
+
 
 .container {
   max-width: 720px;
@@ -22,23 +39,37 @@ body {
 
 header {
   text-align: center;
-  margin-bottom: 2em;
 
   h1 {
     font-size: 2em;
+    color: $color-moonlight;
     margin-bottom: 0.25em;
-    border-bottom: 2px dotted $border-color;
+    border-bottom: 2px dotted $color-moonlight;
     padding-bottom: 0.25em;
   }
 
-  .sub {
-    font-size: 0.9em;
-    color: $link-color;
+  .username {
+    font-weight: bold;
+    color: $color-moonlight;
+    font-size: 1.2em;
+  }
+
+}
+
+.login-container{
+  a.login-button {
+    display: block;
+    margin: 2em auto;
+    width: max-content;
+  } 
+  h1{
+    color:$color-moonlight;
+    font-size: 1em;
   }
 }
 
 .post-list {
-  border: 1px dotted $border-color;
+  border: 1px dotted $color-glimmer;
   padding: 1em;
   margin-bottom: 2em;
   background-color: rgba(255, 255, 255, 0.05);
@@ -46,50 +77,69 @@ header {
 
 .post {
   padding: 0.5em;
-  border-bottom: 1px dotted $border-color;
+  border-bottom: 1px dotted $color-glimmer;
 
   &:last-child {
     border-bottom: none;
   }
 
-  .meta {
-    font-size: 0.75em;
-    color: $link-color;
-  }
+  .post-header {
 
-  .content {
-    white-space: pre-wrap;
-    word-break: break-word;
-    margin-top: 0.3em;
+    .timestamp {
+      font-size: 0.75em;
+      color: $color-glimmer;
+    }
+
+    .username {
+      font-weight: bold;
+      color: $color-moonlight;
+    }
+
+  }
+  .post-message {
+    margin-top: 0.5em;
+    color: $color-glimmer;
   }
 }
 
 .post-form {
   form {
+    position: relative;
     display: flex;
     flex-direction: column;
+    padding: 2em;
 
     textarea {
       font-family: 'DotGothic16', monospace;
-      background-color: #001144;
-      color: $text-color;
-      border: 1px dotted $border-color;
+      background-color: color.change($color-aqua, $alpha: 0.2);
+      color: $color-moonlight;
+      border: 1px dotted $color-glimmer;
       resize: vertical;
-      padding: 0.5em;
+      margin: 1em;
+      padding-bottom: 3em;
+      box-sizing: border-box;
+      height: 100px;
+      &::placeholder {
+        color: color.change($color-glimmer, $alpha: 0.8);
+      }
     }
 
     button {
-      margin-top: 0.5em;
-      padding: 0.5em;
+      position: absolute;
+      right: 3em;
+      bottom: 0.5em;
+      padding: 0.3em 2em;
+      font-size: 0.9em;
+
       font-family: inherit;
-      background-color: $link-color;
-      color: $bg-color;
+      background-color: $color-moonlight;
+      color: $color-night_sky;
       border: none;
       cursor: pointer;
       font-weight: bold;
 
       &:hover {
-        background-color: lighten($link-color, 10%);
+        background-color: color.scale($color-aqua, $lightness: 10%);
       }
     }
   }
@@ -99,7 +149,7 @@ footer {
   margin-top: 2em;
   text-align: center;
   font-size: 0.75em;
-  color: $border-color;
+  color: $color-glimmer;
 }
 
 // スマホ対応

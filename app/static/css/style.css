@@ -1,10 +1,23 @@
 body {
   font-family: "DotGothic16", monospace;
   background-color: #000033;
-  color: #ffff66;
+  color: #33ccff;
   margin: 0;
   padding: 0;
   line-height: 1.6;
+}
+
+a {
+  background-color: #ccffff;
+  color: #000033;
+  padding: 0 0.5em;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 1em;
+}
+a:hover {
+  background-color: rgb(71.4, 209.1, 255);
 }
 
 .container {
@@ -15,17 +28,28 @@ body {
 
 header {
   text-align: center;
-  margin-bottom: 2em;
 }
 header h1 {
   font-size: 2em;
+  color: #ffff66;
   margin-bottom: 0.25em;
-  border-bottom: 2px dotted #ccffff;
+  border-bottom: 2px dotted #ffff66;
   padding-bottom: 0.25em;
 }
-header .sub {
-  font-size: 0.9em;
-  color: #33ccff;
+header .username {
+  font-weight: bold;
+  color: #ffff66;
+  font-size: 1.2em;
+}
+
+.login-container a.login-button {
+  display: block;
+  margin: 2em auto;
+  width: max-content;
+}
+.login-container h1 {
+  color: #ffff66;
+  font-size: 1em;
 }
 
 .post-list {
@@ -42,40 +66,54 @@ header .sub {
 .post:last-child {
   border-bottom: none;
 }
-.post .meta {
+.post .post-header .timestamp {
   font-size: 0.75em;
-  color: #33ccff;
+  color: #ccffff;
 }
-.post .content {
-  white-space: pre-wrap;
-  word-break: break-word;
-  margin-top: 0.3em;
+.post .post-header .username {
+  font-weight: bold;
+  color: #ffff66;
+}
+.post .post-message {
+  margin-top: 0.5em;
+  color: #ccffff;
 }
 
 .post-form form {
+  position: relative;
   display: flex;
   flex-direction: column;
+  padding: 2em;
 }
 .post-form form textarea {
   font-family: "DotGothic16", monospace;
-  background-color: #001144;
+  background-color: rgba(51, 204, 255, 0.2);
   color: #ffff66;
   border: 1px dotted #ccffff;
   resize: vertical;
-  padding: 0.5em;
+  margin: 1em;
+  padding-bottom: 3em;
+  box-sizing: border-box;
+  height: 100px;
+}
+.post-form form textarea::placeholder {
+  color: rgba(204, 255, 255, 0.8);
 }
 .post-form form button {
-  margin-top: 0.5em;
-  padding: 0.5em;
+  position: absolute;
+  right: 3em;
+  bottom: 0.5em;
+  padding: 0.3em 2em;
+  font-size: 0.9em;
   font-family: inherit;
-  background-color: #33ccff;
+  background-color: #ffff66;
   color: #000033;
   border: none;
   cursor: pointer;
   font-weight: bold;
 }
 .post-form form button:hover {
-  background-color: #66d9ff;
+  background-color: rgb(71.4, 209.1, 255);
 }
 
 footer {
