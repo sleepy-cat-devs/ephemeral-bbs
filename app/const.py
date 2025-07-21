@@ -5,6 +5,7 @@
 
 import os
 from typing import Final
+from zoneinfo import ZoneInfo
 
 
 class Const:
@@ -19,6 +20,7 @@ class Const:
     PORT: Final[int] = int(os.getenv("PORT", "5000"))  # サーバーポート番号
     BBS_FILE: Final[str] = os.getenv("BBS_FILE", "bbs.json")  # 掲示板データファイル
     CONNECT_TIMEOUT: Final[int] = 10  # API接続タイムアウト
+    LOCAL_TZ: Final[ZoneInfo] = ZoneInfo("Asia/Tokyo")
 
     # --- Discord OAuth2 認証関連 ---
     CLIENT_ID: Final[str] = os.getenv(

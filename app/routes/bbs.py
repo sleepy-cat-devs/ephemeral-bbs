@@ -18,9 +18,10 @@
 """
 
 from datetime import UTC, datetime
+from http import HTTPMethod
 import json
 from pathlib import Path
-from typing import TypedDict
+from typing import Self, TypedDict
 
 from const import Const
 from flask import (
@@ -35,12 +36,71 @@ from flask import (
 from werkzeug.wrappers import Response as WerkzeugResponse
 
 
-class Post(TypedDict):
+class Post:
     """掲示板の投稿データ型定義"""
 
-    username: str
-    message: str
-    timestamp: str
+    class PostDict(TypedDict):
+        """掲示板の投稿データ型定義"""
+
+        username: str
+        message: str
+        timestamp: str
+
+    def __init__(self, username: str, message: str, timestamp: datetime) -> None:
+        """初期化メソッド
+
+        Args:
+            username (str): ユーザー名
+            message (str): メッセージ
+            timestamp (datetime): タイムスタンプ
+
+        """
+        self.username = username
+        self.message = message
+        self.timestamp = timestamp
+
+    @classmethod
+    def from_json(cls, data: PostDict) -> Self:
+        """JSONデータからPostオブジェクトを生成します。
+
+        Args:
+            data (PostDict): JSON形式の投稿データ
+
+        Returns:
+            Post: Postオブジェクト
+
+        """
+        return cls(
+            username=data["username"],
+            message=data["message"],
+            timestamp=datetime.fromisoformat(data["timestamp"]),
+        )
+
+    def to_json(self) -> PostDict:
+        """投稿データを辞書形式に変換します。
+
+        Returns:
+            PostDict: 投稿データの辞書表現
+
+        """
+        return {
+            "username": self.username,
+            "message": self.message,
+            "timestamp": self.timestamp.isoformat(),
+        }
+
+    def to_dict(self) -> PostDict:
+        """投稿データを辞書形式に変換します。
+
+        Returns:
+            dict: 投稿データの辞書表現
+
+        """
+        return {
+            "username": self.username,
+            "message": self.message,
+            "timestamp": self.timestamp.astimezone(Const.LOCAL_TZ).strftime("%H:%M"),
+        }
 
 
 bbs_bp = Blueprint("bbs", __name__)
@@ -56,9 +116,10 @@ def load_posts() -> list[Post]:
     """
     if not Path(Const.BBS_FILE).exists():
         return []
+
     try:
         with Path(Const.BBS_FILE).open("r", encoding="utf-8") as f:
-            return json.load(f)
+            return [Post.from_json(post) for post in json.load(f)]
     except (json.JSONDecodeError, FileNotFoundError):
         return []
 
@@ -77,7 +138,12 @@ def save_post(new_post: Post) -> None:
     posts.append(new_post)
     try:
         with Path(Const.BBS_FILE).open("w", encoding="utf-8") as f:
-            json.dump(posts, f, indent=4, ensure_ascii=False)
+            json.dump(
+                [post.to_json() for post in posts],
+                f,
+                indent=4,
+                ensure_ascii=False,
+            )
     except Exception as e:
         msg = f"Failed to save post: {e}"
         raise RuntimeError(msg) from e
@@ -94,19 +160,21 @@ def bbs() -> Response | WerkzeugResponse:
     if "user" not in session or not session.get("is_member"):
         return Response(
             render_template(
-                "pages/login_required/index.html", title="閲覧権限がありません"
+                "pages/login_required/index.html",
+                title="閲覧権限がありません",
             ),
         )
 
-    if request.method == "POST":
+    if request.method == HTTPMethod.POST:
         message = request.form.get("message")
         if message:
             user_info = session["user"]
-            new_post: Post = {
-                "username": user_info["username"],
-                "message": message,
-                "timestamp": datetime.now(tz=UTC).isoformat(),
-            }
+            new_post = Post(
+                username=user_info["username"],
+                message=message,
+                timestamp=datetime.now(tz=UTC),
+            )
+
             try:
                 save_post(new_post)
             except RuntimeError as e:
@@ -120,8 +188,7 @@ def bbs() -> Response | WerkzeugResponse:
                 )
         return redirect(url_for("bbs.bbs"))
 
-    posts = load_posts()
-    posts.reverse()
+    posts = [post.to_dict() for post in sorted(load_posts(), key=lambda p: p.timestamp)]
     return Response(
         render_template("pages/bbs/index.html", title="Server Member BBS", posts=posts),
     )

@@ -59,7 +59,6 @@ def login() -> WerkzeugResponse:
         session["user"] = {
             "id": "123456789012345678",
             "username": "TestUser",
-            "avatar": "default_avatar.png",
         }
         session["is_member"] = True
         return redirect(url_for("bbs.bbs"))
@@ -133,7 +132,6 @@ def callback() -> Response | WerkzeugResponse:
         session["user"] = {
             "id": user_info.get("id"),
             "username": user_info.get("username"),
-            "avatar": user_info.get("avatar"),
         }
         session["is_member"] = True
         return redirect(url_for("bbs.bbs"))
